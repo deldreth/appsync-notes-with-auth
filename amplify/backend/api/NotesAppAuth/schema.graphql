@@ -1,0 +1,17 @@
+type Device @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  notes: [Note] @connection(keyName: "byDevice", fields: ["id"])
+}
+
+type Note
+  @model
+  @key(name: "byDevice", fields: ["deviceID"])
+  @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  name: String!
+  body: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+  deviceID: ID!
+  device: Device! @connection(fields: ["deviceID"])
+}
